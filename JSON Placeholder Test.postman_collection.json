@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "3fcac88e-97ab-4766-945e-27c8076dc262",
+		"name": "JSON Placeholder Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PostmanBdd",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"postman.setGlobalVariable('postmanBDD', responseBody);\r",
+							"\r",
+							"eval(globals.postmanBDD);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://bigstickcarpet.com/postman-bdd/dist/postman-bdd.min.js",
+					"protocol": "http",
+					"host": [
+						"bigstickcarpet",
+						"com"
+					],
+					"path": [
+						"postman-bdd",
+						"dist",
+						"postman-bdd.min.js"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retorna todas as postagens",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"eval(globals.postmanBDD);\r",
+							"\r",
+							"describe('Busca todas as postagens', function() {\r",
+							"    \r",
+							"  it('Deve retornar 200 na resposta', function() {\r",
+							"    response.should.have.status(200);\r",
+							"  });\r",
+							"\r",
+							"  it('Não deve retornar 500 na resposta', function() {\r",
+							"    response.should.not.have.status(500);\r",
+							"  });\r",
+							"\r",
+							"  it('Deve validar que resposta é JSON', () => {\r",
+							"    response.should.be.json;\r",
+							"  });\r",
+							"\r",
+							"  it(\"Deve validar que o userId não é nulo\", () => {\r",
+							"        _.each(pm.response.json(), (arrItem) => {\r",
+							"            console.log(arrItem)\r",
+							"            expect(arrItem.userId).to.be.not.null;\r",
+							"        })\r",
+							"  })\r",
+							"\r",
+							"  it(\"Deve retornar sucesso ao identificar titulo de id\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    expect(jsonData[0].title).to.eql(\"sunt aut facere repellat provident occaecati excepturi optio reprehenderit\");\r",
+							"    expect(jsonData[99].title).to.eql(\"at nam consequatur ea labore ea harum\");\r",
+							"  });\r",
+							"\r",
+							"})\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"baseUrl\", \"https://jsonplaceholder.typicode.com\");\r",
+							"pm.environment.set(\"user\", 1);\r",
+							"pm.environment.set(\"body\", \"Teste\");\r",
+							"pm.environment.set(\"title\", \"Titulo Teste\");\r",
+							"pm.environment.set(\"ID\", 1);\r",
+							"pm.environment.set(\"idpost\", 7);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/posts",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retorna postagem de id especifica",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"eval(globals.postmanBDD);\r",
+							"\r",
+							"describe('Busca postagem por id', function() {\r",
+							"    \r",
+							"  it('Deve retornar 200 na resposta', function() {\r",
+							"    response.should.have.status(200);\r",
+							"  });\r",
+							"\r",
+							"  it('Deve validar dados do usuário', function() {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    expect(jsonData.userId).to.eql(1);\r",
+							"    expect(jsonData.id).to.eql(7);\r",
+							"    expect(jsonData.title).to.eql(\"magnam facilis autem\");\r",
+							"    expect(jsonData.body).to.eql(\"dolore placeat quibusdam ea quo vitae\\nmagni quis enim qui quis quo nemo aut saepe\\nquidem repellat excepturi ut quia\\nsunt ut sequi eos ea sed quas\");\r",
+							"  });\r",
+							"\r",
+							"}) "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/posts/{{idpost}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"posts",
+						"{{idpost}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criando uma id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"eval(globals.postmanBDD);\r",
+							"\r",
+							"describe('Criar Id', function() {\r",
+							"    \r",
+							"  it('Deve retornar 201 na resposta', function() {\r",
+							"    response.should.have.status(201);\r",
+							"  });\r",
+							"\r",
+							"  it(\"Deve retornar dados criados com sucesso\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    expect(jsonData.title).to.eql(\"Titulo Teste\");\r",
+							"    expect(jsonData.body).to.eql(\"Teste\");\r",
+							"    expect(jsonData.userId).to.eql(1);\r",
+							"    expect(jsonData.id).to.eql(101);\r",
+							"\r",
+							"  });\r",
+							"})  "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"{{title}}\",\r\n    \"body\": \"{{body}}\",\r\n    \"userId\": {{user}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/posts",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualiza uma postagem",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"eval(globals.postmanBDD);\r",
+							"\r",
+							"describe('Edita postagem', function() {\r",
+							"    \r",
+							"  it('Deve retornar 200 na resposta', function() {\r",
+							"    response.should.have.status(200);\r",
+							"  });\r",
+							"\r",
+							"  it(\"Deve validar atualização de dados com sucesso\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    expect(jsonData.id).to.eql(1);\r",
+							"    expect(jsonData.title).to.eql(\"Titulo Teste\");\r",
+							"    expect(jsonData.body).to.eql(\"Teste\");\r",
+							"    expect(jsonData.userId).to.eql(1);\r",
+							"  });\r",
+							"\r",
+							"  it(\"Deve validar se dados não estão incorretos\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    expect(jsonData.id).not.to.eql(2);\r",
+							"    expect(jsonData.title).not.to.eql(\"Teste Incorreto\");\r",
+							"    expect(jsonData.body).not.to.eql(\"Nada\");\r",
+							"    expect(jsonData.userId).not.to.eql(5);\r",
+							"  });\r",
+							"\r",
+							"\r",
+							"})  "
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": {{ID}},\r\n    \"title\": \"{{title}}\",\r\n    \"body\": \"{{body}}\",\r\n    \"userId\": {{user}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/posts/{{ID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"posts",
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Exclui uma postagem",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"eval(globals.postmanBDD);\r",
+							"\r",
+							"describe('Excluir postagem', function() {\r",
+							"    \r",
+							"  it('Deve retornar 200 na resposta e não vir vazio', function() {\r",
+							"    response.should.have.status(200);\r",
+							"  });\r",
+							"})  "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/posts/{{ID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"posts",
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
